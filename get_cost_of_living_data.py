@@ -29,6 +29,6 @@ for row in table_rows:
     cost_of_living.append(float(third_column[0]))
 
 # Create pandas data frame
-data = {'Country': countries, "Cost_Of_Living": cost_of_living}
+data = {'country': countries, "cost_of_living": cost_of_living}
 df = pd.DataFrame(data)
 
