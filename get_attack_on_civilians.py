@@ -28,7 +28,7 @@ def get_country_code_name():
         codes.append(code.get_text().strip())
 
     # Convert to pandas
-    data = {'country_code': codes, "country_name": names}
+    data = {'country_code': codes, "country": names}
     df_label = pd.DataFrame(data)
 
     return df_label
@@ -47,5 +47,6 @@ def get_attack_on_civilians():
     # Assign country name
     df_label = get_country_code_name()
     df = pd.merge(df, df_label, on='country_code')
+    df = df[['country_code', 'country', 'attacks']]
 
     return df

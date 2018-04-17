@@ -1,6 +1,7 @@
 import wbdata
 import datetime
 import pandas as pd
+import numpy as np
 
 
 def get_latest_wb_indicator_by_country(name: str, indicator: str):
@@ -10,13 +11,14 @@ def get_latest_wb_indicator_by_country(name: str, indicator: str):
     raw_data = wbdata.get_data(indicator=indicator, data_date=date)
 
     # Get country and arrivals
-    countries_code = []
     countries = []
     value = []
     for x in raw_data:
-        countries_code.append(x['country_code'])
         countries.append(x['country']['value'])
-        value.append(x['value'])
+        arrivals = x['value']
+        if arrivals is None:
+            arrivals = np.nan
+        value.append(arrivals)
 
     # Store as pandas data frame
     data = {"country": countries, name: value}
