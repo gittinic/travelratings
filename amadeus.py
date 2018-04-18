@@ -28,13 +28,18 @@ def getCountries():
         lines = col.read().splitlines()
     countries = [x.lower() for x in lines]
     return countries
+# get key
+def readKey():
+    with open('key.txt', 'r') as file:
+        key = file.readline()
+    return key
 
 # get flight price data from Amadeus API
 def getData():
     priceList = []
     orgList = []
     destList = []
-    
+    apiKey = readKey()
     # set query parameter
     origin = ['JFK']
     departure_date = ['2018-07-15']
@@ -62,16 +67,17 @@ def getData():
                     # write the corresponding destination country
                     desCountry = find_country_for_airport_code(dest)
                     output.write(desCountry + ',')
-                    destList.append(dest)
+                    destList.append(desCountry)
                     
                     # construct the url with encoding
                     start = "https://apiconsole-prod.apigee.net/smartdocs/v1/sendrequest?targeturl=https%3A%2F%2Fapi.sandbox.amadeus.com%2Fv1.2%2F"
 
                     partUrl = "flights/low-fare-search?" \
-                              "apikey=cdfc2noTw8v5Rp3gsGPA8ZgjQGWvtrRl" \
+                              "apikey=" + apiKey + \
                               "&origin=" + org + \
                               "&destination=" + dest + \
-                              "&departure_date=2018-05-15&_=1523980626850"
+                              "&departure_date=" + depdt + \
+                              "&_=1523980626850"
                     url = start + urllib.parse.quote_plus(partUrl)
                     print(url)
 
