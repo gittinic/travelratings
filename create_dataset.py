@@ -68,16 +68,16 @@ cover = cover[['files', 'description']]
 
 # Write data frames
 writer = pd.ExcelWriter('data.xlsx')
-cover.to_excel(writer,'cover.xlsx', index=False)
-col.to_excel(writer,'col_raw.xlsx', index=False)
-aoc.to_excel(writer,'aoc_raw.xlsx', index=False)
-pop.to_excel(writer, 'pop_raw.xlsx', index=False)
-tourism.to_excel(writer, 'tourism_raw.xlsx', index=False)
-col.to_excel(writer,'col_clean.xlsx', index=False)
-aoc_clean.to_excel(writer,'aoc_clean.xlsx', index=False)
-pop_clean.to_excel(writer, 'pop_clean.xlsx', index=False)
-tourism_clean.to_excel(writer, 'tourism_clean.xlsx', index=False)
-merged.to_excel(writer, 'merged.xlsx', index=False)
+cover.to_excel(writer,'cover', index=False)
+col.to_excel(writer,'col_raw', index=False)
+aoc.to_excel(writer,'aoc_raw', index=False)
+pop.to_excel(writer, 'pop_raw', index=False)
+tourism.to_excel(writer, 'tourism_raw', index=False)
+col.to_excel(writer,'col_clean', index=False)
+aoc_clean.to_excel(writer,'aoc_clean', index=False)
+pop_clean.to_excel(writer, 'pop_clean', index=False)
+tourism_clean.to_excel(writer, 'tourism_clean', index=False)
+merged.to_excel(writer, 'merged', index=False)
 writer.save()
 
 
