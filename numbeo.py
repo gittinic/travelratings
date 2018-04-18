@@ -1,9 +1,13 @@
-# About the data:
-# Source Numbeo https://www.numbeo.com/cost-of-living/rankings_by_country.jsp
-# International cost of living index
-# Data collection via web scrap
+'''
+== About the data ==
+- Source: Numbeo
+- Variables: Cost of living index.
+- Data is retrieved via web scrap.
 
-# Imports
+@author: Nicolas
+'''
+
+
 import requests
 from bs4 import BeautifulSoup as bs
 import pandas as pd
@@ -37,3 +41,9 @@ def get_cost_of_living_data():
 
     return df
 
+
+def main():
+    get_cost_of_living_data()
+    # test()
+if __name__ == '__main__':
+    main()

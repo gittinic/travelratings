@@ -1,15 +1,20 @@
-# About the data:
-# Source gdeltproject.org
-# Attacks on civilians
-# Tutorial on how to get the data:
-# http://nbviewer.jupyter.org/github/JamesPHoughton/Published_Blog_Scripts/blob/master/GDELT%20Wrangler%20-%20Clean.ipynb
+'''
+== About the data ==
+- Source: GDELT Project
+- Variables: coerce, e.g. violent attack on civilians
+- Data is retrieved using Google BigQuery and country name is assigned via web scrapping the mapping.
+- Event Code 170 is Coerce, e.g. violence against civilians, see: http://data.gdeltproject.org/documentation/CAMEO.Manual.1.1b3.pdf
+
+@author: Nicolas
+'''
 
 
 import requests
 from bs4 import BeautifulSoup as bs
 import pandas as pd
 
-def get_country_code_name():
+
+def get_country_by_ISO3_code():
     page = requests.get('https://wits.worldbank.org/wits/wits/witshelp/content/codes/country_codes.htm')
     page = page.content
     soup = bs(page, 'html.parser')
@@ -45,8 +50,15 @@ def get_attack_on_civilians():
     df = pd.read_gbq(query, "gdelt-201419")
 
     # Assign country name
-    df_label = get_country_code_name()
+    df_label = get_country_by_ISO3_code()
     df = pd.merge(df, df_label, on='country_code')
     df = df[['country_code', 'country', 'attacks']]
 
     return df
+
+
+def main():
+    get_attack_on_civilians()
+    # test()
+if __name__ == '__main__':
+    main()

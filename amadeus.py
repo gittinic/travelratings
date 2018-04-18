@@ -1,7 +1,18 @@
+'''
+== About the data ==
+- Source: amadeus
+- Variables: flight price
+- Data is retrieved via the company's API.
+
+@author: Rui
+'''
+
+
 import requests
 import json
 import urllib.parse
 import pandas as pd
+
 
 # airport data stores the raw data including airport, city, country, airport code
 def get_airport_data():
@@ -10,11 +21,13 @@ def get_airport_data():
                                       'X1', 'X2', 'X4', 'X5', 'X6', 'X7', 'X8', 'X9', 'X10'])
     return df
 
+
 # find corresponding country for the airport code
 def find_country_for_airport_code(airport_code: str):
     df_airport = get_airport_data()
     row = df_airport.loc[df_airport['Code'] == airport_code]
     return row['Country'].tolist()[0]
+
 
 # find corresponding airport code for the country
 def find_airportCode_for_country(country: str):
@@ -22,17 +35,21 @@ def find_airportCode_for_country(country: str):
     row = df_airport.loc[df_airport['Country'].str.lower() == country]
     return row['Code']
 
+
 # get all countries needed
 def getCountries():
     with open('countries', 'r') as col:
         lines = col.read().splitlines()
     countries = [x.lower() for x in lines]
     return countries
+
+
 # get key
 def readKey():
-    with open('key.txt', 'r') as file:
+    with open('amadeus_api_key.txt', 'r') as file:
         key = file.readline()
     return key
+
 
 # get flight price data from Amadeus API
 def getData():
@@ -43,7 +60,7 @@ def getData():
     # set query parameter
     origin = ['JFK']
     departure_date = ['2018-07-15']
-    desination = []
+    destination = []
     
     # read all countries from txt
     countries = getCountries()
@@ -52,15 +69,15 @@ def getData():
         while '\\N' in list: list.remove('\\N')
         if len(list) > 0:
             code = list[0]
-            desination.append(code)
+            destination.append(code)
             
-    output = open("out.csv", "w")
+    output = open("flight_prices.csv", "w")
 
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.90 Safari/537.36'}
 
     # Make a get request to get the latest price
     for org in origin:
-        for dest in desination:
+        for dest in destination:
             if org != dest:
                 for depdt in departure_date:
                     
@@ -103,12 +120,15 @@ def getData():
                     print(desCountry + ',' + price + '\n')
     output.close()
     # build data frame
-    data = {"destination": destList, "price": priceList}
+    data = {"country": destList, "flight_price": priceList}
     df_label = pd.DataFrame(data)
     return df_label
+
 
 def main():
     getData()
     # test()
+
+
 if __name__ == '__main__':
     main()

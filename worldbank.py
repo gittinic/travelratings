@@ -1,3 +1,13 @@
+'''
+== About the data ==
+- Source: World Bank
+- Variables: Total Population and number of tourist arrivals by country
+- Data is retrieved using wbdata library.
+
+@author: Nicolas
+'''
+
+
 import wbdata
 import datetime
 import pandas as pd
@@ -26,6 +36,12 @@ def get_latest_wb_indicator_by_country(name: str, indicator: str):
 
     return df
 
+
+def main():
+    get_latest_wb_indicator_by_country()
+    # test()
+if __name__ == '__main__':
+    main()
 
 # # Example:
 # population = get_latest_wb_indicator_by_country('SP.POP.TOTL', 'pop')
