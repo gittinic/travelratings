@@ -5,7 +5,10 @@ import get_cost_of_living_data as get_col
 import get_attack_on_civilians as get_aoc
 import get_wb_indicator_by_country as get_wbi
 import amadeus as get_flight
+import wbdata
 
+
+wbdata.get_source()
 # GET DATA
 
 # Get cost of living
@@ -35,7 +38,8 @@ pop_clean = pop.dropna(axis=0, how='any')
 # tourism: drop NAs
 tourism_clean = tourism.dropna(axis=0, how='any')
 
-flight_clean = flight.dropna(axis=0, how='any')
+# flights: drop price = '-1'
+flight_clean = flight[flight.priceList != '-1']
 
 
 # MERGE DATA
