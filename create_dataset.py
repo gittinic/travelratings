@@ -36,7 +36,7 @@ tourism_clean = tourism.dropna(axis=0, how='any')
 # MERGE DATA
 
 # Combine to single data frame
-dfs = [col, aoc_clean, pop, tourism,]
+dfs = [col, aoc_clean, pop, tourism]
 
 # Merge: note that regions and country clusters in world bank data are removed by merge
 merged = reduce(lambda left, right: pd.merge(left, right, on='country'), dfs)
