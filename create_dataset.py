@@ -33,20 +33,21 @@ aoc_clean = aoc_clean[['country', 'attacks']]
 # pop: drop NAs
 pop_clean = pop.dropna(axis=0, how='any')
 
-# tourism: drop NAs
+# tourism: drop NAs and convert to numeric
 tourism_clean = tourism.dropna(axis=0, how='any')
+tourism_clean['tourism'] = pd.to_numeric(tourism_clean['tourism'])
 
 # flight: convert to numeric and drop NAs
 flight_clean = flight
-flight_clean['flight_price'] = flight_clean['flight_price'].apply(pd.to_numeric)
+flight_clean['flight_price'] = pd.to_numeric(flight_clean['flight_price'])
 flight_clean = flight_clean.replace(-1, np.nan)
-flight_clean = flight.dropna(axis=0, how='any')
+flight_clean = flight_clean.dropna(axis=0, how='any')
 
 
 # MERGE DATA
 
 # Combine to single data frame
-dfs = [col, aoc_clean, pop, tourism, flight_clean]
+dfs = [col, aoc_clean, pop_clean, tourism_clean, flight_clean]
 
 # Merge: note that regions and country clusters in world bank data are removed by merge
 merged = reduce(lambda left, right: pd.merge(left, right, on='country'), dfs)
