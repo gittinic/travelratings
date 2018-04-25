@@ -55,7 +55,7 @@ merged = merged[['country', 'cost_of_living', 'attacks', 'population', 'tourism'
 # Cover sheet
 files = ['col_raw', 'aoc_raw', 'pop_raw', 'tourism_raw',
          'col_clean', 'aoc_clean', 'pop_clean', 'tourism_clean',
-         'merged', '', 'Note 2:']
+         'merged', '', 'Note 1:', "Note 2:"]
 description = ['Raw data of cost of living index by country (Source: Numbeo)',
                'Raw data of attacks on civilians by country in 2018 (Source: GDELT Project)',
                'Raw data of total population by country, 2016 (Source: World Bank)',
@@ -66,7 +66,8 @@ description = ['Raw data of cost of living index by country (Source: Numbeo)',
                'Cleaned arriving tourists data --> tourism',
                'Merged data with columns: country, cost_of_living, attacks, population, tourism',
                '',
-               'Some rows in the merged set may be lost due to NAs or because the matching key slightly differs (may be improved in the future).']
+               'Some rows in the merged set may be lost due to NAs or because the matching key slightly differs (may be improved in the future).',
+               'Flight price data will be queried via amadeus.py in the application once the user has chosen a destination based on the above data.']
 cover = pd.DataFrame({'files': files, 'description': description})
 cover = cover[['files', 'description']]
 
