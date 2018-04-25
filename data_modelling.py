@@ -54,6 +54,9 @@ def total_score_df(df):
     df['Total'] = df.sum(axis=1)
     return df
 
+def comp_rank(df):
+    df['Rank'] = np.floor(df['Total'].rank(ascending=False))
+    return df
 
 # Compute tourism per head
 tour = comp_per_head_tourism(raw['population'], raw['tourism'])
@@ -68,10 +71,11 @@ features = pd.DataFrame({'Country': raw['country'], 'Tourism': tour, 'Safety': a
 
 # Compute total score
 features = total_score_df(features)
+features = comp_rank(features)
 
 # Set order in data frame
 # Set order
-features = features[['Country', 'Affordability', 'Safety', 'Tourism', 'Total']]
+features = features[['Country', 'Affordability', 'Safety', 'Tourism', 'Total', 'Rank']]
 
 writer = pd.ExcelWriter('features.xlsx')
 features.to_excel(writer,'Features', index=False)
