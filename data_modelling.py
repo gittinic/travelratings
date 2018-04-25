@@ -3,7 +3,7 @@ from scipy.stats import norm
 import numpy as np
 
 # Read data
-raw = pd.read_excel('app_data.xlsx', sheet_name='merged', header=0)
+raw = pd.read_excel('data.xlsx', sheet_name='merged', header=0)
 
 
 '''

@@ -71,7 +71,7 @@ cover = pd.DataFrame({'files': files, 'description': description})
 cover = cover[['files', 'description']]
 
 # Write data frames
-writer = pd.ExcelWriter('app_data.xlsx')
+writer = pd.ExcelWriter('data.xlsx')
 cover.to_excel(writer,'cover', index=False)
 col.to_excel(writer,'col_raw', index=False)
 aoc.to_excel(writer,'aoc_raw', index=False)
