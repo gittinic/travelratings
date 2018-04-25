@@ -20,6 +20,7 @@ to achieve a 0 to 10 scale, this value is multiplied by 10.
 The total score is computed as the sum of the individual scores.
 '''
 
+
 def comp_per_head_tourism(pop, arrivals):
     tourism = arrivals / pop
     return tourism
@@ -54,9 +55,11 @@ def total_score_df(df):
     df['Total'] = df.sum(axis=1)
     return df
 
+
 def comp_rank(df):
     df['Rank'] = np.floor(df['Total'].rank(ascending=False))
     return df
+
 
 # Compute tourism per head
 tour = comp_per_head_tourism(raw['population'], raw['tourism'])
@@ -74,7 +77,9 @@ features = total_score_df(features)
 features = comp_rank(features)
 
 # Set order in data frame
-# Set order
+features = features[['Country', 'Affordability', 'Safety', 'Tourism', 'Total', 'Rank']]
+
+# Set order in data frame
 features = features[['Country', 'Affordability', 'Safety', 'Tourism', 'Total', 'Rank']]
 
 writer = pd.ExcelWriter('features.xlsx')
