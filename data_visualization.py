@@ -8,6 +8,7 @@ def bar_plot_score(score, top):
     # Sort and subset data
     feat_sort = feat.sort_values(by=[score], ascending=False)
     feat_subset = feat_sort[:top]
+    print(len(feat_subset[score]))
     ind = np.arange(top)
 
     # Create bar
@@ -49,3 +50,20 @@ def stacked_bar_plot_total_score(top):
     plt.ylim([0, 30])
     plt.legend((p1[0], p2[0], p3[0]), ('Affordability', 'Safety', 'Tourism'))
     plt.show()
+
+def group_bar_plot():
+    # Get data from top-5 countries
+    top = feat.sort_values(['Rank'], ascending=[True])
+    indices = top[:5][['Country', 'Affordability', 'Safety', 'Tourism', ]]
+    # Plot
+    plot = indices.plot.bar()
+    # Set format
+    plot.set_ylim([0, 10])
+    plot.set_ylabel('Scores')
+    plot.set_xticklabels(indices['Country'], rotation=0)
+    plot.set_title('Indices from top 5 countries')
+    plt.grid(linestyle='dotted')
+    plt.show()
+
+# bar_plot_score('Affordability',100)
+# group_bar_plot()
