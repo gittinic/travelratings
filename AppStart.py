@@ -3,14 +3,15 @@ import sys
 from data_visualization import bar_plot_score, group_bar_plot, stacked_bar_plot_total_score, country_pie_chart
 from tabulate import tabulate
 import pandas as pd
+from requests import put
 
 # Global variables
-from travelratings.data_visualization import score_plot_trisurf
-from travelratings.flight_price_calc import getData
+from data_visualization import score_plot_trisurf
+from flight_price_calc import getData
 
 dict = {'1':'Affordability', '2':'Safety', '3':'Tourism'}
 feat = pd.read_excel('features.xlsx', sheet_name='Features', header=0)
-flight = pd.read_excel('data.xlsx', sheet_name='flight_clean', header=0)
+flight = pd.read_excel('data.xlsx', sheet_name='merged', header=0)
 
 
 def menu():
@@ -25,10 +26,11 @@ def menu():
         print('2. Show countries with top score')
         print('3. Show results by countries')
         print('4. Show country rankings')
-        print('5. Check flight price by countries')
-        print('6. show all indices for one country')
-        print('7. statistic analysis')
-        print('8. quit')
+        print('5. Show country overview')
+        print('6. Check flight price by countries')
+        print('7. Share Feedback')
+        print('8. statistic analysis')
+        print('9. quit')
         print('Input numbers from 1 to 8...')
         x = input()
         choose(x)
@@ -49,19 +51,22 @@ def choose(x):
         '2': show_stack_barplot,
         '3': show_result_country,
         '4': show_ranking_country,
-        '5': show_flight_price,
-        '6': show_country_pie_chart,
-        '7': show_3d_chart,
-        '8': quit
+        '5': show_country_pie_chart,
+        '6': show_flight_price,
+        '7': share_feedback,
+        '8': show_3d_chart,
+        '9': quit
     }
     # Get the function from switcher dictionary
     func = switcher.get(x, lambda: print("Invalid input. Please try again."))
     # Execute the function
     func()
 
+
 def show_3d_chart():
     score_plot_trisurf()
     return
+
 
 def show_country_pie_chart():
     """
@@ -202,6 +207,25 @@ def show_flight_price():
     print('loading...')
     print(getData(originC, destC, depdt, rtndt))
     # print_flight(dest)
+    return
+
+def share_feedback():
+    """
+    call print_flight
+    :return:
+    """
+    print('Where have you travelled to? ')
+    country = input()
+    print('How would you rate Affordability on a scale from 0 to 10? ')
+    affordability = input()
+    put('http://localhost:5000/feedback/Affordability/%s' % country, data={'value': affordability})
+    print('How would you rate Safety on a scale from 0 to 10? ')
+    safety = input()
+    put('http://localhost:5000/feedback/Safety/%s' % country, data={'value': safety})
+    print('How would you rate Tourism on a scale from 0 to 10? ')
+    tourism = input()
+    put('http://localhost:5000/feedback/Tourism/%s' % country, data={'value': tourism})
+    print('Thank you for your Feedback! Check out overview for this country now :-)')
     return
 
 

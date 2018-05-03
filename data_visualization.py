@@ -5,6 +5,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from requests import get
 
 # Change matplotlib plot style
 plt.style.use('ggplot')
@@ -109,21 +110,43 @@ def country_pie_chart(country: str):
     if check_country(country):
         # Get data
         dat = feat[feat['Country'] == country]
-        scores = dat[score_list].values[0]
-        total = dat['Total'].values
+        scores = dat[score_list].values[0].tolist()
+        total = float(dat['Total'].values)
         rank = dat['Rank'].values
         labels = score_list
 
-        # Plot
-        def absolute_value(val):
-            a = np.round(val / 100. * scores.sum(), 0)
-            return a
+        # Get user data
+        feedback_available = False
+        try:
+            affordability = get('http://localhost:5000/feedback/Affordability/%s' % country).json()
+            safety = get('http://localhost:5000/feedback/Safety/%s' % country).json()
+            tourism = get('http://localhost:5000/feedback/Tourism/%s' % country).json()
+            scores_user = [np.mean(affordability), np.mean(safety), np.mean(tourism)]
+            total_user = np.sum(scores_user)
+            feedback_available = True
+        except:
+            feedback_available = False
 
-        plt.figure(figsize=(6, 6))
-        plt.pie(scores, labels=labels, autopct=absolute_value)
+        # Plot data sources
+        if feedback_available:
+            plt.figure(figsize=(12, 6))
+            plt.subplot(1, 2, 1)
+        else:
+            plt.figure(figsize=(6, 6))
+        plt.pie(scores, labels=labels, autopct=lambda p: round(p * total / 100, 1))
         plt.axis('equal')
-        plt.title('Country: %(country)s overall scores %(total)d and ranks %(rank)d \n\n'
+        plt.title('%(country)s scores %(total)8.1f and ranks %(rank)d \n\n'
                   % {'country': country, 'total': total, 'rank': rank})
+
+        # Plot for feedback
+        if feedback_available:
+            plt.subplot(1, 2, 2)
+            plt.pie(scores_user, labels=labels, autopct=lambda p: round(p * total_user / 100, 1))
+            plt.axis('equal')
+            plt.title('Users give %(country)s a score of %(total)8.1f \n\n'
+                      % {'country': country, 'total': total_user})
+
+        plt.tight_layout()
         plt.show()
     else:
         print_country_error(country)
