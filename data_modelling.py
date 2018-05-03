@@ -21,9 +21,9 @@ The total score is computed as the sum of the individual scores.
 '''
 
 
-def comp_per_head_tourism(pop, arrivals):
-    tourism = arrivals / pop
-    return tourism
+def feat_per_head(feat):
+    feat_ph = feat / raw['population']
+    return feat_ph
 
 
 def scale(x: float, goal: str):
@@ -62,11 +62,12 @@ def comp_rank(df):
 
 
 # Compute tourism per head
-tour = comp_per_head_tourism(raw['population'], raw['tourism'])
+tour = feat_per_head(raw['tourism'])
+attacks = feat_per_head(raw['attacks'])
 
 # Scale data
 tour = scale(tour, 'min')
-attacks = scale(raw['attacks'], 'min')
+attacks = scale(attacks, 'min')
 living_costs = scale(raw['cost_of_living'], 'min')
 
 # Create feature data frame
