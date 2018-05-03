@@ -5,6 +5,9 @@ from tabulate import tabulate
 import pandas as pd
 
 # Global variables
+from travelratings.data_visualization import score_plot_trisurf
+from travelratings.flight_price_calc import getData
+
 dict = {'1':'Affordability', '2':'Safety', '3':'Tourism'}
 feat = pd.read_excel('features.xlsx', sheet_name='Features', header=0)
 flight = pd.read_excel('data.xlsx', sheet_name='flight_clean', header=0)
@@ -16,6 +19,7 @@ def menu():
     :return: according function
     """
     while(True):
+        print('===========================================')
         print('Welcome to tripRatings. Here is our menu: ')
         print('1. Show bar plots')
         print('2. Show countries with top score')
@@ -23,11 +27,12 @@ def menu():
         print('4. Show country rankings')
         print('5. Check flight price by countries')
         print('6. show all indices for one country')
-        print('7. Quit')
-        print('Input numbers from 1 to 7...')
+        print('7. statistic analysis')
+        print('8. quit')
+        print('Input numbers from 1 to 8...')
         x = input()
         choose(x)
-        print('\n\n')
+        print('==========================================')
     return
 
 def choose(x):
@@ -46,13 +51,17 @@ def choose(x):
         '4': show_ranking_country,
         '5': show_flight_price,
         '6': show_country_pie_chart,
-        '7': quit
+        '7': show_3d_chart,
+        '8': quit
     }
     # Get the function from switcher dictionary
     func = switcher.get(x, lambda: print("Invalid input. Please try again."))
     # Execute the function
     func()
 
+def show_3d_chart():
+    score_plot_trisurf()
+    return
 
 def show_country_pie_chart():
     """
@@ -182,9 +191,17 @@ def show_flight_price():
     call print_flight
     :return:
     """
-    print('Type your destination: ')
-    dest = input()
-    print_flight(dest)
+    print('Type your origin country: ')
+    originC = input()
+    print('Type your destination country: ')
+    destC = input()
+    print('Type your departure date(format: 2018-06-25): ')
+    depdt = input()
+    print('Type your return date(format: 2018-06-25): ')
+    rtndt = input()
+    print('loading...')
+    print(getData(originC, destC, depdt, rtndt))
+    # print_flight(dest)
     return
 
 

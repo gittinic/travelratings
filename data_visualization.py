@@ -2,6 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
 # Change matplotlib plot style
 plt.style.use('ggplot')
 
@@ -138,6 +142,62 @@ def country_score(country: str):
     else:
         print_country_error(country)
 
+# def score_surface_plot():
+#     fig = plt.figure()
+#     ax = fig.gca(projection='3d')
+#     X, Y = np.meshgrid(feat['Affordability'], feat['Tourism'])
+#     R = np.sqrt(X ** 2 + Y ** 2)
+#     Z = np.sin(R) / (X ** 2 + Y ** 2)
+#     # Plot the surface.
+#     surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
+#                            linewidth=0, antialiased=False)
+#     # Customize the z axis.
+#     ax.set_zlim(0, 10)
+#     ax.zaxis.set_major_locator(LinearLocator(10))
+#     ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+#     ax.set_zlabel('Distance', fontsize=5, rotation=0)
+#
+#     # Customize the labels
+#     ax.set_xlabel('Affordability', fontsize=7)
+#     ax.set_ylabel('Tourism', fontsize=7)
+#     for tick in ax.xaxis.get_major_ticks():
+#         tick.label.set_fontsize(5)
+#     for tick in ax.yaxis.get_major_ticks():
+#         tick.label.set_fontsize(5)
+#     for tick in ax.zaxis.get_major_ticks():
+#         tick.label.set_fontsize(5)
+#     # Add a color bar which maps values to colors.
+#     fig.colorbar(surf, shrink=0.5, aspect=5)
+#     plt.title('Relation Analysis')
+#     plt.show()
+
+def score_plot_trisurf():
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+
+    ax.plot_trisurf(feat['Affordability'], feat['Tourism'], feat['Safety'], linewidth=0.2, antialiased=True)
+
+    # Customize the z axis.
+    ax.set_zlim(0, 10)
+    ax.zaxis.set_major_locator(LinearLocator(10))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+    ax.set_zlabel('Safety', fontsize=5, rotation=0)
+
+    # Customize the labels
+    ax.set_xlabel('Affordability', fontsize=7)
+    ax.set_ylabel('Tourism', fontsize=7)
+    for tick in ax.xaxis.get_major_ticks():
+        tick.label.set_fontsize(5)
+    for tick in ax.yaxis.get_major_ticks():
+        tick.label.set_fontsize(5)
+    for tick in ax.zaxis.get_major_ticks():
+        tick.label.set_fontsize(5)
+
+    plt.title('Relationship among indices')
+    plt.show()
+
+# score_plot_trisurf()
+# score_surface_plot()
 # bar_plot_score('Affordability',100)
 # group_bar_plot()
 # country_pie_chart('Japan')
